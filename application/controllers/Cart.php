@@ -1,4 +1,7 @@
 <?php
+// header('Access-Control-Allow-Origin: *');
+// header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS');
+defined('BASEPATH') OR exit('No direct script access allowed');
     class Cart extends CI_Controller{
         
         function __construct(){
@@ -28,13 +31,13 @@
             foreach ($this -> cart -> contents() as $items) {
                 $no++;
                 $output .= '
-                    <tr>
-                        <td> '.$items['name'].'</td>
-                        <td> '.number_format($items['price']).'</td>
-                        <td> '.$items['qty'].'</td>
-                        <td> '.number_format($items['subtotal']).'</td>
-                        <td> <button type="button" id="'.$items['rowid'].'" class="hapus_cart btn btn-danger btn-xs"> Batal </button> </td>
-                    </tr>
+                    <tr><small>
+                        <td >'.$items['name'].'</td>
+                        <td class="text-right">'.number_format($items['price']).'</td>
+                        <td class="text-right">'.$items['qty'].'</td>
+                        <td class="text-right">'.number_format($items['subtotal']).'</td>
+                        <td> <button type="button" id="'.$items['rowid'].'" class="hapus_cart btn btn-danger btn-sm"> Batal </button> </td>
+                    </small></tr>
                 ';
             }
             $output .= '

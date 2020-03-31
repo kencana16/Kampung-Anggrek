@@ -73,7 +73,7 @@ class Product_model extends CI_Model{
 
     private function _deleteImage($id){
         $product = $this->getById($id);
-        if ($product->image != "default.jpg") {
+        if ($product->produk_image != "default.jpg") {
             $filename = explode(".", $product->produk_image)[0];
             return array_map('unlink', glob(FCPATH."/assets/images/$filename.*"));
         }

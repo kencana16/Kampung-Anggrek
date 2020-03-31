@@ -50,11 +50,11 @@
                                             <td>
                                                 <?php echo $product->produk_nama ?>
                                             </td>
-                                            <td>
-                                                <?php echo $product->produk_harga ?>
+                                            <td width="150">
+                                                <?php echo "Rp. ".number_format($product->produk_harga) ?>
                                             </td>
-                                            <td>
-                                                <img src="<?php echo base_url('assets/images/'.$product->produk_image) ?>" width="64" />
+                                            <td width="150">
+                                                <img src="<?php echo base_url('assets/images/'.$product->produk_image) ?>" width="64" class="mx-auto d-block"/>
                                             </td>
                                             <td width="200">
                                                 <a href="<?php echo site_url('admin/products/edit/'.$product->produk_id) ?>"
