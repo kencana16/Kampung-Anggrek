@@ -1,10 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class Products extends CI_Controller{
+class Produk extends CI_Controller{
     public function __construct(){
         parent::__construct();
+        
+		if($this->session->userdata('group') != '1'){
+			$this->session->set_flashdata('error','Anda Bukan Admin!');
+			redirect('login');
+		}
         $this->load->model("product_model");
-        $this->load->library("form_validation");
     }
 
     public function index(){
@@ -12,14 +16,14 @@ class Products extends CI_Controller{
         $this->load->view("admin/product/list",$data);
     }
 
-    public function add(){
-        $products = $this->product_model;
+    public function Tambah(){
         $validation = $this->form_validation;
-        $validation->set_rules($products->rules());
+        $validation->set_rules($this->product_model->rules());
 
         if($validation->run()){
-            $products->save();
+            $this->product_model->save();
             $this->session->set_flashdata('success', 'Berhasil Disimpan');
+            redirect(current_url());
         }
         $this->load->view("admin/product/new_form");
     }
@@ -27,26 +31,25 @@ class Products extends CI_Controller{
     public function edit($id = null){
         if(!isset($id)) redirect('admin/products');
 
-        $products = $this->product_model;
         $validation = $this->form_validation;
-        $validation->set_rules($products->rules());
+        $validation->set_rules($this->product_model->rules());
 
         if($validation->run()){
-            $products->update();
+            $this->product_model->update();
             $this->session->set_flashdata('success', 'Berhasil Disimpan');
         }
 
-        $data["product"] = $products->getById($id);
+        $data["product"] = $this->product_model->getById($id);
         if(!$data["product"]) show_404();
 
         $this->load->view("admin/product/edit_form", $data);
     }
 
-    public function delete($id = null){
+    public function hapus($id = null){
         if(!isset($id)) show_404();
 
         if($this->product_model->delete($id)){
-            redirect(site_url('admin/products'));
+            redirect(site_url('admin/produk'));
         }
     }
 

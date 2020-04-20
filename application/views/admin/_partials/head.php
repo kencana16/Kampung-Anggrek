@@ -4,6 +4,8 @@
 <meta name="description" content="" />
 <meta name="author" content="" />
 <title><?php echo SITE_NAME .": ". ucfirst($this->uri->segment(1)) ." - ". ucfirst($this->uri->segment(2)) ?></title>
-<link href="<?php echo base_url()?>assets/css/styles.css" rel="stylesheet" />
-<link href="<?php echo base_url()?>assets/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
-<script src="<?php echo base_url()?>assets/js/fontawesome.all.min.js" ></script>
+<link href="<?php echo base_url()?>assets/css/styles-admin.css" rel="stylesheet" />
+<link href="<?php echo base_url()?>assets/css/dataTables.bootstrap4.min.css" rel="stylesheet"/>
+<link href="<?php echo base_url()?>assets/css/buttons.dataTables.min.css" rel="stylesheet"/>
+<link href="https://cdn.datatables.net/buttons/1.6.1/css/buttons.dataTables.min.css" rel="stylesheet"/>
+

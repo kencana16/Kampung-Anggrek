@@ -11,7 +11,7 @@
                 <main>
                     <div class="container-fluid">
                         <?php $this->load->view("admin/_partials/breadcrumb.php") ?>
-                        <?php //$this->load->view("admin/_partials/examplesbadmin.php") ?>
+                        <?php $this->load->view("admin/_partials/examplesbadmin.php") ?>
                     </div>
                 </main>
                 <?php $this->load->view("admin/_partials/footer.php") ?>

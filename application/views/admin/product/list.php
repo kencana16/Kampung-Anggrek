@@ -13,27 +13,35 @@
                         <?php $this->load->view("admin/_partials/breadcrumb.php") ?>
                         <div class="card mb-4">
                             <div class="card-header">
-                                <a href="<?php echo site_url('admin/products/add') ?>"><i class="fas fa-plus"></i> Tambah Produk</a>
+                                <a href="<?php echo site_url('admin/produk/tambah') ?>"><i class="fas fa-plus"></i> Tambah Produk</a>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
-                                                <!-- <th>No</th> -->
-                                                <th>Nama</th>
-                                                <th>Harga</th>
-                                                <th>Gambar</th>
-                                                <th>Aksi</th>
+                                                <th class="align-middle">Gambar</th>
+                                                <th class="align-middle">Produk</th>
+                                                <th class="align-middle">Satuan</th>
+                                                <th class="align-middle">Stok Minimal</th>
+                                                <th class="align-middle">Stok Tersisa</th>
+                                                <th class="align-middle">Harga Beli</th>
+                                                <th class="align-middle">Harga Jual</th>
+                                                <th class="align-middle">Deskripsi</th>
+                                                <th class="align-middle">Aksi</th>
                                             </tr>
                                         </thead>
                                         <tfoot>
                                             <tr>
-                                                <!-- <th>No</th> -->
-                                                <th>Nama</th>
-                                                <th>Harga</th>
-                                                <th>Gambar</th>
-                                                <th>Aksi</th>
+                                                <th class="align-middle">Gambar</th>
+                                                <th class="align-middle">Produk</th>
+                                                <th class="align-middle">Satuan</th>
+                                                <th class="align-middle">Stok Minimal</th>
+                                                <th class="align-middle">Stok Tersisa</th>
+                                                <th class="align-middle">Harga Beli</th>
+                                                <th class="align-middle">Harga Jual</th>
+                                                <th class="align-middle">Deskripsi</th>
+                                                <th class="align-middle">Aksi</th>
                                             </tr>
                                         </tfoot>
                                         <tbody>
@@ -44,23 +52,35 @@
                                             // $no++;
                                         ?>
                                         <tr>
-                                            <!-- <td width ="50" class="text-center">
-                                                <?php //echo $no ?>
-                                            </td> -->
                                             <td>
-                                                <?php echo $product->produk_nama ?>
+                                                <img src="<?php echo base_url('assets/images/'.$product->gambar) ?>" height="75" class="mx-auto d-block"/>
                                             </td>
-                                            <td width="150">
-                                                <?php echo "Rp. ".number_format($product->produk_harga) ?>
+                                            <td>
+                                                <?= $product->nm_barang ?>
                                             </td>
-                                            <td width="150">
-                                                <img src="<?php echo base_url('assets/images/'.$product->produk_image) ?>" width="64" class="mx-auto d-block"/>
+                                            <td>
+                                                <?= $product->satuan ?>
                                             </td>
-                                            <td width="200">
-                                                <a href="<?php echo site_url('admin/products/edit/'.$product->produk_id) ?>"
-                                                class="btn btn-small"><i class="fas fa-edit"></i> Edit</a>
-                                                <a onclick="deleteConfirm('<?php echo site_url('admin/products/delete/'.$product->produk_id) ?>')"
-                                                href="#!" class="btn btn-small text-danger"><i class="fas fa-trash"></i> Hapus</a>
+                                            <td>
+                                                <?= $product->stok_min ?>
+                                            </td>
+                                            <td>
+                                                <?= $product->stok ?>
+                                            </td>
+                                            <td>
+                                                <?= 'Rp.&nbsp;'.number_format($product->harga_beli) ?>
+                                            </td>
+                                            <td>
+                                            <?= 'Rp.&nbsp;'.number_format($product->harga) ?>
+                                            </td>
+                                            <td>
+                                                <?= $product->deskripsi ?>
+                                            </td>
+                                            <td class="text-center">
+                                                <a href="<?php echo site_url('admin/produk/edit/'.$product->kd_barang) ?>"
+                                                class="btn btn-small d-inline-flex"><i class="fas fa-edit mr-1"></i> Edit</a>
+                                                <a onclick="deleteConfirm('<?php echo site_url('admin/produk/hapus/'.$product->kd_barang) ?>')"
+                                                href="#!" class="btn btn-small text-danger d-inline-flex"><i class="fas fa-trash mr-1"></i> Hapus</a>
                                             </td>
                                         </tr>
                                         <?php endforeach; ?>
