@@ -75,6 +75,11 @@ class Produk extends CI_Controller {
 				</small></tr>
 			';
 		}
+		$output .= '<tr>
+			<th class="text-right" colspan="5">Total </th>
+			<th class="text-right" id="total">Rp. '.number_format($this->cart->total()).'</th>
+			<th class="text-center">'.anchor('produk/clear_cart','Clear Cart',['class'=>'btn btn-sm btn-danger']).' </th>
+		</tr>';
 		return $output;
 	}
 
@@ -90,7 +95,7 @@ class Produk extends CI_Controller {
 			'qty' => 0,
 		);
 		$this -> cart ->update($data);
-		echo $this -> show_cart();
+		echo $this -> load_cart();
 	}
 
 	//hapus semua data di keranjang
