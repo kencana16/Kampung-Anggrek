@@ -82,7 +82,7 @@ class Orders_model extends CI_Model {
 
     {
 
-        $this->db->select('penjualan.no_nota, konsumen.nm_konsumen, penjualan.tgl_jual, penjualan.total_biaya');
+        $this->db->select('penjualan.no_nota, konsumen.nm_konsumen, konsumen.email, penjualan.tgl_jual, penjualan.total_biaya');
 
         $this->db->from('penjualan');
 

@@ -1,26 +1,29 @@
 <?php
 include_once('connection.php');
 $username =$_POST['username'];
-$get_kd_kons = mysqli_fetch_row(mysqli_query($koneksi,"select kd_kons from konsumen where username='$username'"));
-$kd_kons = $get_kd_kons[0];
+$get_kd_kons = mysqli_fetch_row(mysqli_query($koneksi,"select kd_konsumen from konsumen where username='$username'"));
 
-$total=$_POST['total'];
-$pembayaran=$_POST['pembayaran'];
-$kembalian=$_POST['kembalian'];
-$tanggal=date("Y-m-d");
-$insert = "INSERT INTO penjualan(kd_konsumen,tgl_jual,total_biaya,pembayaran,kembalian) VALUES($kd_kons,'$tanggal','$total','$pembayaran','$kembalian')";
+$kd_kons = $get_kd_kons[0];
+$total = $_POST['total'];
+$tanggal= date('Y-m-d H:i:s', mktime( date('H'),date('i'),date('s'),date('m'),date('d') + 1,date('Y')));
+
+$insert = "INSERT INTO penjualan(kd_konsumen,tgl_jual,total_biaya) VALUES($kd_kons,'$tanggal','$total')";
 $exeinsert = mysqli_query($koneksi,$insert);
+
+$get_no_nota = mysqli_fetch_row(mysqli_query($koneksi,"select no_nota from penjualan where kd_konsumen='$kd_kons' and tgl_jual='$tanggal' and total_biaya='$total'"));
+$no_nota = $get_no_nota[0];
+
 $response = array();
 if($exeinsert)
 {
 $response['code'] =1;
-$response['test'] =$kd_kons;
+$response['no_nota'] =$no_nota;
 $response['message'] = "Success ! Pemesanan dibuat";
 }
 else
 {
 $response['code'] =0;
-$response['test'] =$kd_kons;
+$response['no_nota'] =$no_nota;
 $response['message'] = "Failed ! Pemesanan gagal dibuat";
 }
 echo json_encode($response);

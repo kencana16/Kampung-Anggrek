@@ -1,6 +1,9 @@
 <?php
 include_once("connection.php");
-$query = "SELECT * FROM barang";
+
+$username = $_POST["kode_konsumen"];
+
+$query = "SELECT * FROM konsumen WHERE kd_konsumen='$username'";
 $result = mysqli_query($koneksi,$query);
 $arraydata = array();
 

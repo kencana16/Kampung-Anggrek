@@ -1,20 +1,14 @@
 <?php
 include_once('connection.php');
-$row=mysqli_fetch_row(mysqli_query($koneksi,"SELECT no_nota FROM penjualan ORDER BY no_nota DESC limit 1"));
-$no_nota=$row[0];
 
-$kode=$_POST['kode'];
-$ambil=mysqli_query($koneksi,"SELECT harga,harga_beli FROM
-barang WHERE kd_brg='$kode'");
-$row=mysqli_fetch_row($ambil);
-$harga=$row[0];
-$hargabeli=$row[1];
-$jumlah=$_POST['jumlah'];
-$total_harga=$harga*$jumlah;
-$insert = "INSERT INTO
-detail_penjualan(no_nota,kd_brg,hrg_brg,hrg_beli,jml_brg)
-VALUES('$no_nota','$kode','$harga','$hargabeli','$jumlah')";
+$no_nota    = $_POST['no_nota'];
+$kode       = $_POST['kode'];
+$harga      = $_POST['harga'];
+$jumlah     = $_POST['jumlah'];
+
+$insert = "INSERT INTO detail_penjualan(no_nota,kd_brg,hrg_brg,jml_brg)VALUES('$no_nota','$kode','$harga','$jumlah')";
 $exeinsert = mysqli_query($koneksi,$insert);
+
 $response = array();
 if($exeinsert)
 {
@@ -25,6 +19,7 @@ else
 {
 $response['code'] =0;
 $response['message'] = "Failed ! Detail pemesanan gagal dibuat";
+$response['query'] = $insert;
 }
 echo json_encode($response);
 ?>

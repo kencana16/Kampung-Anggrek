@@ -10,7 +10,7 @@
 
                 <h4>Kampung Anggrek Sekarang Sudah Tersedia Di Android</h4>
 
-                <br><a href="<?= site_url('produk/downloadapp')?>"  class="btn btn-lg btn-beli"> Download APP</a>
+                <br><a href="https://drive.google.com/file/d/1MFvdxF4xOGwepr5wq2JcBAJXsT2-cHF6/view"  class="btn btn-lg btn-beli"> Download APP</a>
 
             </div>
 

@@ -84,7 +84,7 @@
 
                                                 <td><?=$invoice->no_nota?></td>
 
-                                                <td><?=$invoice->nm_konsumen?></td>
+                                                <td><?=$invoice->nm_konsumen."<br>(".$invoice->email.")"?></td>
 
                                                 <td><?=$invoice->tgl_jual?></td>
 
