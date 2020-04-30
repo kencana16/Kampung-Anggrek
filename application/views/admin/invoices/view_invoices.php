@@ -88,7 +88,7 @@
 
                                                 <td><?=$invoice->tgl_jual?></td>
 
-                                                <td class="text-right">Rp. <?=$invoice->total_biaya?></td>
+                                                <td class="text-right">Rp. <?=number_format($invoice->total_biaya)?></td>
 
                                                 <td>
 
@@ -124,21 +124,22 @@
 
         <?php $this->load->view("admin/_partials/js.php") ?>
 
-        <?php $this->load->view("admin/_partials/modal.php") ?>      
-
+        <?php $this->load->view("admin/_partials/modal.php") ?>
+                                            
         <script src="<?php echo base_url()?>assets/js/dataTables.buttons.min.js"></script>
 
         <script src="<?php echo base_url()?>assets/js/buttons.flash.min.js"></script>
-
-        <script src="<?php echo base_url()?>assets/js/vfs_fonts.js"></script>
 
         <script src="<?php echo base_url()?>assets/js/jszip.min.js"></script>
 
         <script src="<?php echo base_url()?>assets/js/pdfmake.min.js"></script>
 
+        <script src="<?php echo base_url()?>assets/js/vfs_fonts.js"></script>
+
         <script src="<?php echo base_url()?>assets/js/buttons.html5.min.js"></script>
 
         <script src="<?php echo base_url()?>assets/js/buttons.print.min.js"></script>
+      
 
         <script>
 
@@ -159,43 +160,40 @@
                     dom: 'Bfrtip',
 
                     buttons: [
-
                         {
-
-                            extend: 'print',
-
+                            extend: 'copy',
                             exportOptions: {
-
-                                columns: [ 0, 1, 2, 3, 4, 5 ]
-
+                                columns: [ 0, 1, 2, 3 ]
                             }
-
                         },
-
                         {
-
                             extend: 'excel',
-
                             exportOptions: {
-
-                                columns: [ 0, 1, 2, 3, 4, 5 ]
-
+                                columns: [ 0, 1, 2, 3 ]
                             }
-
                         },
-
                         {
-
-                            extend: 'pdf',
-
+                            extend: 'csv',
                             exportOptions: {
-
-                                columns: [ 0, 1, 2, 3, 4, 5 ]
-
+                                columns: [ 0, 1, 2, 3 ]
                             }
-
-                        }
-
+                        },
+                        
+                        {
+                            extend: 'pdf',
+                            exportOptions: {
+                                columns: [ 0, 1, 2, 3 ]
+                            }
+                        },
+                        
+                        {
+                            extend: 'print',
+                            exportOptions: {
+                                columns: [ 0, 1, 2, 3 ]
+                            }
+                        },
+                        
+                        
                     ]
 
                 } );
@@ -203,6 +201,20 @@
             } );
 
         </script>
+
+    <script src="<?php echo base_url()?>assets/js/dataTables.buttons.min.js"></script>
+
+    <script src="<?php echo base_url()?>assets/js/buttons.flash.min.js"></script>
+
+    <script src="<?php echo base_url()?>assets/js/jszip.min.js"></script>
+
+    <script src="<?php echo base_url()?>assets/js/pdfmake.min.js"></script>
+
+    <script src="<?php echo base_url()?>assets/js/vfs_fonts.js"></script>
+
+    <script src="<?php echo base_url()?>assets/js/buttons.html5.min.js"></script>
+
+    <script src="<?php echo base_url()?>assets/js/buttons.print.min.js"></script>
 
     </body>
 
