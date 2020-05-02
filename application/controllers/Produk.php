@@ -54,9 +54,9 @@ class Produk extends CI_Controller {
 	
 	//halaman keranjang
 	public function cart(){
-		$data['province'] = $this->shipping_model->getAllProvince();
-		
 		$this->load->model('shipping_model');
+		$data['province'] = $this->shipping_model->getAllProvince();
+
 		$this->load->view('user/show_cart', $data);
 	}
 

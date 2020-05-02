@@ -191,8 +191,8 @@
 						data : {id: id},
 						async : true,
 						success: function(data){
-							$('#kabKota').html(data);
-							$('#biaya').html("");
+							$('#kabKota').html(data); //mengisi option pada kab/kota
+							$('#biaya').html("");	//membuat div biaya kosong
 	
 						}
 					});
