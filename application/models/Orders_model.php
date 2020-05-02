@@ -10,16 +10,17 @@ class Orders_model extends CI_Model {
 
 	{
 
+
 		//create new order
 
 		$order = array(
-
             'kd_konsumen'   => $this->session->userdata('id'),
-
 			'tgl_jual'	    => date('Y-m-d H:i:s', mktime( date('H'),date('i'),date('s'),date('m'),date('d') + 1,date('Y'))),
-
-			'total_biaya'	=> $this->cart->total()
-
+            'pembelian'	    => $this->cart->total(),         
+            'kode_kab'    	=> $this -> input -> post('kabKota'),
+            'kurir'     	=> $this -> input -> post('kurir'),
+            'ongkir'    	=> $this -> input -> post('ongkir'),
+            'total_biaya'   => (int) $this -> input -> post('ongkir')+ (int) $this->cart->total(),
 		);
 
 		$this->db->insert('penjualan', $order);

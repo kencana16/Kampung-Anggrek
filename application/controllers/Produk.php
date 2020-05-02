@@ -54,7 +54,10 @@ class Produk extends CI_Controller {
 	
 	//halaman keranjang
 	public function cart(){
-		$this->load->view('user/show_cart');
+		$data['province'] = $this->shipping_model->getAllProvince();
+		
+		$this->load->model('shipping_model');
+		$this->load->view('user/show_cart', $data);
 	}
 
 	//menampilkan daftar cart pada tabel
@@ -77,7 +80,7 @@ class Produk extends CI_Controller {
 		}
 		$output .= '<tr>
 			<th class="text-right" colspan="5">Total </th>
-			<th class="text-right" id="total">Rp. '.number_format($this->cart->total()).'</th>
+			<th class="text-right"><span id="total">Rp. '.number_format($this->cart->total()) .'</span></th>
 			<th class="text-center">'.anchor('produk/clear_cart','Clear Cart',['class'=>'btn btn-sm btn-danger']).' </th>
 		</tr>';
 		return $output;
@@ -105,8 +108,20 @@ class Produk extends CI_Controller {
 		redirect(base_url());
 	}
 
-	//download file 
-    public function downloadapp(){				
-		redirect(base_url('assets/apk/kampung-anggrek.apk'));
+	//mengambil kabupaten/kota berdasarkan provinsi
+	function load_kabKota(){
+		$this->load->model('shipping_model');
+
+		return $this->shipping_model->getKabKota($this ->input->post('id',TRUE));
+		
 	}
+
+	//mengambil ongkir berdasarkan kab dan kurir
+	function load_ongkir(){
+		$this->load->model('shipping_model');
+
+		return $this->shipping_model->getOngkir($this ->input->post('kab',TRUE),$this ->input->post('kurir',TRUE));
+
+	}
+
 }
