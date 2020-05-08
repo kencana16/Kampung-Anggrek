@@ -148,7 +148,10 @@
 
 			$('.cart-nav').remove();
 
+			console.log("ini ke load 1")
 			$(document).ready(function() {
+
+				console.log("ini ke load 2")
 				var ongkir;
 				var total;
 
