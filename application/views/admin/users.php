@@ -142,19 +142,13 @@
 
         <script>
 
-            function deleteConfirm(url){
-
-                $('#btn-delete').attr('href', url);
-
-                $('#deleteModal').modal();
-
-            }
-
             $(document).ready(function() {
-                                
-
-                $('#dataTable').DataTable( {} );
-
+                $('#dataTable').DataTable( {
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ]
+                } );
             } );
 
         </script>

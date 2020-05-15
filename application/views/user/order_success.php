@@ -28,7 +28,8 @@
 					Transaksi berhasil diproses, Silahkan kembali ke halaman utama untuk memulai transaksi kembali
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-success" onclick="location.href='<?= base_url()?>'">Kembali ke beranda</button>
+					<button type="button" class="btn" onclick="location.href='<?= base_url()?>'">Kembali ke beranda</button>
+					<button type="button" class="btn btn-success " onclick="location.href='<?= site_url('order/printNota/'.$no_nota)?>'">Cetak Nota</button>
 				</div>
 				</div>
 			</div>

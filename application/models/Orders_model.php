@@ -6,75 +6,44 @@ class Orders_model extends CI_Model {
 
 	
 
-	public function process()
-
-	{
-
-
+	public function process(){
 		//create new order
-
 		$order = array(
             'kd_konsumen'   => $this->session->userdata('id'),
-			'tgl_jual'	    => date('Y-m-d H:i:s', mktime( date('H'),date('i'),date('s'),date('m'),date('d') + 1,date('Y'))),
+			'tgl_jual'	    => date('Y-m-d H:i:s', mktime( date('H'),date('i'),date('s'),date('m'),date('d'),date('Y'))),
             'pembelian'	    => $this->cart->total(),         
+            'tujuan'    	=> $this -> input -> post('alamat'),
             'kode_kab'    	=> $this -> input -> post('kabKota'),
             'kurir'     	=> $this -> input -> post('kurir'),
             'ongkir'    	=> $this -> input -> post('ongkir'),
-            'total_biaya'   => (int) $this -> input -> post('ongkir')+ (int) $this->cart->total(),
+            'total_biaya'   => (int) $this -> input -> post('ongkir') + (int) $this->cart->total(),
 		);
-
 		$this->db->insert('penjualan', $order);
-
 		$order_id = $this->db->insert_id();
 
-		
-
-		// put ordered items in orders table
-
+		// tabel detail jual
 		foreach($this->cart->contents() as $item){
-
 			$data = array(
-
 				'no_nota'		    => $order_id,
-
 				'kd_brg'		    => $item['id'],
-
 				'hrg_brg'		    => $item['price'],
-
 				'jml_brg'		    => $item['qty']
-
 			);
-
 			$this->db->insert('detail_penjualan', $data);
-
         }
 
-        
-
+        //kurangi stok barang
 		foreach($this->cart->contents() as $item){
-
             $hasil = $this->db->where('kd_barang',$item['id'])->limit(1)->get('barang')->result_array();
-
             foreach($hasil AS $row) {
-
                 $stok = $row['stok'];
-
             };
-
 			$data = array(
-
                 'stok'  => $stok-$item['qty']
-
 			);
-
 			$this->db->update('barang', $data, array('kd_barang'=>$item['id']));
-
 		}
-
-		
-
-		return TRUE;
-
+		return $order_id;
 	}
 
 	
@@ -83,7 +52,7 @@ class Orders_model extends CI_Model {
 
     {
 
-        $this->db->select('penjualan.no_nota, konsumen.nm_konsumen, konsumen.email, penjualan.tgl_jual, penjualan.total_biaya');
+        $this->db->select('penjualan.no_nota, konsumen.nm_konsumen, konsumen.email, penjualan.tgl_jual, penjualan.pembelian, penjualan.tujuan, penjualan.ongkir, penjualan.total_biaya');
 
         $this->db->from('penjualan');
 
@@ -104,23 +73,25 @@ class Orders_model extends CI_Model {
     }
 
 
-
     public function get_orders_by_id($id)
-
     {
-
         $hasil = $this->db->where('no_nota',$id)->limit(1)->get('penjualan');
-
         if($hasil->num_rows() > 0){
-
             return $hasil->row();
-
         } else {
-
             return array();
-
         }
-
+    }
+    
+    public function get_orders_by_User()
+    {
+        $kd_konsumen = $this->session->userdata('id');
+        $hasil = $this->db->where('kd_konsumen',$kd_konsumen)->get('penjualan');
+        if($hasil->num_rows() > 0){
+            return $hasil->result();
+        } else {
+            return array();
+        }
     }
 
 
@@ -151,4 +122,5 @@ class Orders_model extends CI_Model {
 
     }
 
+    
 }

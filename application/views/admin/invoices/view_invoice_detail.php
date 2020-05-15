@@ -61,10 +61,14 @@
         <?php $this->load->view("admin/_partials/js.php") ?>
         <?php $this->load->view("admin/_partials/modal.php") ?>
         <script>
-            function deleteConfirm(url){
-                $('#btn-delete').attr('href', url);
-                $('#deleteModal').modal();
-            }
+            $(document).ready(function() {
+                $('#dataTable').DataTable( {
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'copy', 'csv', 'excel', 'pdf', 'print'
+                    ]
+                } );
+            } );
         </script>
     </body>
 </html>

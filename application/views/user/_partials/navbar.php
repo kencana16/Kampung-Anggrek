@@ -37,33 +37,19 @@
         <div class="nav-link"><?=anchor('produk/cart', $text_cart_url, array('class' => 'btn text-success px-0 py-1'))?></div>
 
       </li>
-
       <?php if($this->session->userdata('username')) { ?>
-
         <li class="nav-item" >
-
           <div class="nav-link">
-
             <?=anchor('profil', '<i class="fas fa-user mr-1"></i>'.$this->session->userdata('username'), array('class' => 'btn text-success px-0 py-1'))?>  
-
           </div>
-
         </li>
-
+        <li class="nav-item"><div class="nav-link"><?php echo anchor('order/my_order', 'My Orders', array('class' => 'btn text-success '));?></div></li>
         <li class="nav-item"><div class="nav-link"><?php echo anchor('login/logout', 'Logout', array('class' => 'btn btn-outline-success '));?></div></li>
-
       <?php } else { ?>
-
         <li  class="nav-item"><div class="nav-link"><?php echo anchor('login', '<b>Masuk</b>', array('class' => 'btn btn-sm border-success text-success px-3'));?></div></li>
-
         <li  class="nav-item"><div class="nav-link"><?php echo anchor('register', '<b>Daftar</b>', array('class' => 'btn btn-sm bg-success px-3 text-white'));?></div></li>
-
       <?php } ?>
-
       </ul>
-
     </ul>
-
   </div>
-
 </nav>

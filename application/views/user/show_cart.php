@@ -66,6 +66,10 @@
 
 				<div class="card col-12 px-5 pt-5 pb-4">
 					<form action="<?=site_url('order')?>" method="post">
+						<div class="form-group">
+							<label for="alamat">Dikirim ke</label>
+							<textarea name="alamat" id="alamat" class="form-control"></textarea>
+						</div>
 						<div class="form-row">
 							<div class="form-group col">
 								<label for="province">Provinsi</label>
@@ -130,7 +134,7 @@
 						</div>
 
 						<div class="form-group text-center mt-3 mb-0">
-							<button type="submit" class="btn btn-success">Checkout</button>
+							<button type="submit" class="btn btn-success btn-checkout">Checkout</button>
 						</div>
 
 					</form>
@@ -243,6 +247,8 @@
 									total = $('#total').html().replace('Rp. ','').replace(',','');
 									$('#totalAll').html( parseInt(total) + parseInt(ongkir) );
 									$('#totalAll').formatCurrency();
+
+									$('.btn-checkout').prop('disabled', false);
 								});
 							}
 						}
