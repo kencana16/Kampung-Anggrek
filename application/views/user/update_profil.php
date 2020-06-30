@@ -66,7 +66,7 @@
 
 							<div class="img-container border border-2 rounded-circle">
 
-								<img class="rounded-circle" src="<?= base_url().'assets/images/'.$konsumenDetail->foto;?>" alt="">
+								<img class="rounded-circle" src="<?= $konsumenDetail->foto;?>" alt="">
 
 							</div>
 

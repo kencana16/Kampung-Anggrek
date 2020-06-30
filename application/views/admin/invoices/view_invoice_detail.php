@@ -16,7 +16,34 @@
                                 &nbsp;
                             </div>
                             <div class="card-body">
-                                <div class="table-responsive">
+                                <table>
+                                    <tr>
+                                        <td>Status Pembayaran</td>
+                                        <td >&nbsp; : &nbsp;</td>
+                                        <td><?=$invoice->status?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tujuan Pengiriman</td>
+                                        <td >&nbsp; : &nbsp;</td>
+                                        <td><?=$invoice->tujuan?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Expedisi</td>
+                                        <td >&nbsp; : &nbsp;</td>
+                                        <td><?=$invoice->expedisi?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Waktu Pengiriman</td>
+                                        <td >&nbsp; : &nbsp;</td>
+                                        <td><?=$invoice->wkt_pengiriman?></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ongkos Pengiriman</td>
+                                        <td >&nbsp; : &nbsp;</td>
+                                        <td><?="Rp. ".number_format($invoice->ongkir)?></td>
+                                    </tr>
+                                </table>
+                                <div class="table-responsive mt-5">
                                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                         <thead>
                                             <tr>
@@ -29,6 +56,7 @@
                                         <tbody>
 
                                         <?php 
+                                            $total = 0;
                                             foreach($orders as $order) : 
                                             $subtotal = $order->jml_brg * $order->harga;
                                         ?>
@@ -38,7 +66,10 @@
                                             <td><?=$order->jml_brg?></td>
                                             <td><?="Rp. ".number_format($subtotal)?></td>
                                         </tr>
-                                        <?php endforeach; ?>
+                                        <?php 
+                                            $total += $subtotal;
+                                            endforeach;
+                                        ?>
 
                                         </tbody>
                                         <tfoot>
@@ -50,6 +81,27 @@
                                             </tr>
                                         </tfoot>
                                     </table>
+
+                                    <div class="d-flex justify-content-end font-weight-bold">
+                                        <table class="mt-2 mb-5">
+                                            <tr>
+                                                <td>Total Pembelian</td>
+                                                <td >&nbsp; : &nbsp;</td>
+                                                <td><?="Rp. ".number_format($total)?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Ongkos Pengiriman</td>
+                                                <td >&nbsp; : &nbsp;</td>
+                                                <td><?="Rp. ".number_format($invoice->ongkir)?></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Total Biaya</td>
+                                                <td >&nbsp; : &nbsp;</td>
+                                                <td><?="Rp. ".number_format($invoice->total_biaya)?></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
@@ -63,7 +115,7 @@
         <script>
             $(document).ready(function() {
                 $('#dataTable').DataTable( {
-                    dom: 'Bfrtip',
+                    dom: 'B',
                     buttons: [
                         'copy', 'csv', 'excel', 'pdf', 'print'
                     ]

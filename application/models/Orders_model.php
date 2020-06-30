@@ -11,16 +11,20 @@ class Orders_model extends CI_Model {
 		$order = array(
             'kd_konsumen'   => $this->session->userdata('id'),
 			'tgl_jual'	    => date('Y-m-d H:i:s', mktime( date('H'),date('i'),date('s'),date('m'),date('d'),date('Y'))),
+			'due_date'	    => date('Y-m-d H:i:s', mktime( date('H'),date('i'),date('s'),date('m'),date('d')+7,date('Y'))),
             'pembelian'	    => $this->cart->total(),         
             'tujuan'    	=> $this -> input -> post('alamat'),
             'kode_kab'    	=> $this -> input -> post('kabKota'),
             'kurir'     	=> $this -> input -> post('kurir'),
+            'expedisi'     	=> $this -> input -> post('fexpedisi'),
+            'wkt_pengiriman' => $this -> input -> post('fetd'),
             'ongkir'    	=> $this -> input -> post('ongkir'),
             'total_biaya'   => (int) $this -> input -> post('ongkir') + (int) $this->cart->total(),
 		);
 		$this->db->insert('penjualan', $order);
-		$order_id = $this->db->insert_id();
-
+        $order_id = $this->db->insert_id();
+    
+ 
 		// tabel detail jual
 		foreach($this->cart->contents() as $item){
 			$data = array(
@@ -46,13 +50,11 @@ class Orders_model extends CI_Model {
 		return $order_id;
 	}
 
-	
-
     public function all()
 
     {
 
-        $this->db->select('penjualan.no_nota, konsumen.nm_konsumen, konsumen.email, penjualan.tgl_jual, penjualan.pembelian, penjualan.tujuan, penjualan.ongkir, penjualan.total_biaya');
+        $this->db->select('penjualan.no_nota, konsumen.nm_konsumen, konsumen.email, penjualan.tgl_jual, penjualan.pembelian, penjualan.tujuan, penjualan.ongkir, penjualan.total_biaya, penjualan.status, penjualan.image');
 
         $this->db->from('penjualan');
 
@@ -121,6 +123,12 @@ class Orders_model extends CI_Model {
         }
 
     }
+
+    public function update($id, $data_invoice){ 
+        //Query UPDATE FROM ... WHERE id=... 
+        $this->db->where('no_nota', $id) 
+                ->update('penjualan', $data_invoice); 
+    } 
 
     
 }

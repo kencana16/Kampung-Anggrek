@@ -94,7 +94,7 @@ class Shipping_model extends CI_Model{
         if ($err) {
         echo "cURL Error #:" . $err;
         } else {
-        //echo $response;
+        echo $response;
         }
 
         $data = json_decode($response, true);
@@ -102,8 +102,11 @@ class Shipping_model extends CI_Model{
 
             echo '<input type="radio" name="ongkir" value="'.$data['rajaongkir']['results'][0]['costs'][$i]['cost'][0]['value'].'" id=" '.$data['rajaongkir']['results'][0]['costs'][$i]['service'].' ">';
 			echo '<label for=" '.$data['rajaongkir']['results'][0]['costs'][$i]['service'].' " class="card col-12 flex-row justify-content-between">';
-            echo     '<span>'.strtoupper($data['rajaongkir']['results'][0]['code']).' - '.$data['rajaongkir']['results'][0]['costs'][$i]['service'].'<br>'.$data['rajaongkir']['results'][0]['costs'][$i]['cost'][0]['etd']." ";
+            echo     '<span>';
+            echo '<div id="sexpedisi">' .strtoupper($data['rajaongkir']['results'][0]['code']).' - '.$data['rajaongkir']['results'][0]['costs'][$i]['service'].'</div>';
+            echo '<div id="setd">' .$data['rajaongkir']['results'][0]['costs'][$i]['cost'][0]['etd'];
             if($courier!="pos"){echo "HARI";}
+            echo '</div>';
             echo     '</span>';
 			echo     '<span>Rp. '.number_format($data['rajaongkir']['results'][0]['costs'][$i]['cost'][0]['value']).'</span>';
 			echo '</label>';

@@ -14,10 +14,10 @@
                                     <th>No nota</th>
                                     <th>Tanggal Transaksi</th>
                                     <th>Dikirim ke</th>
-                                    <th>Total Pembelian</th>
-                                    <th>Ongkir</th>
                                     <th>Total Biaya</th>
-                                    <th>Aksi</th>
+                                    <th>Bukti Pembayaran</th>
+                                    <th>Status Pembayaran</th>
+                                    <th>Detail Pembelian</th>
                                 </tr>
                             </thead>
                             <tfoot>
@@ -25,10 +25,10 @@
                                     <th>No nota</th>
                                     <th>Tanggal Transaksi</th>
                                     <th>Dikirim ke</th>
-                                    <th>Total Pembelian</th>
-                                    <th>Ongkir</th>
                                     <th>Total Biaya</th>
-                                    <th>Aksi</th>
+                                    <th>Bukti Pembayaran</th>
+                                    <th>Status Pembayaran</th>
+                                    <th>Detail Pembelian</th>
                                 </tr>
                             </tfoot>
                             <tbody>
@@ -37,12 +37,27 @@
                                     <td><?=$invoice->no_nota?></td>
                                     <td><?=$invoice->tgl_jual?></td>
                                     <td><?=$invoice->tujuan?></td>
-                                    <td class="text-right">Rp. <?=number_format($invoice->pembelian)?></td>
-                                    <td class="text-right">Rp. <?=number_format($invoice->ongkir)?></td>
                                     <td class="text-right">Rp. <?=number_format($invoice->total_biaya)?></td>
+                            <td> 
+                                <?php if(isset($invoice->image)){?>
+                                    <img src="<?=base_url('uploads/bukti/').$invoice->image?>" height="50px">
+                                <?php
+                                    }else{echo "Anda belum upload<br> bukti pembayaran";
+                                        echo "<br><small class='text-danger'>bayar sebelum ".date("j F", strtotime($invoice->due_date))."</small>";} 
+                                ?>
+                            </td> 
                                     <td>
-                                        <?=anchor(	'order/my_order_detail/' . $invoice->no_nota, 'Details',['class'=>'btn btn-info btn-sm'])?> 
+                                        <?=$invoice->status?>
+                                        <?php 
+                                            if($invoice->status=="Belum dibayar"){
+                                               echo anchor(	'order/update_bayar/' . $invoice->no_nota, 'Bayar',['class'=>'btn btn-danger btn-sm btn-pay']); 
+                                            }else if($invoice->status=="Sudah dibayar"){
+                                                echo anchor(	'order/printNota/' . $invoice->no_nota, 'Cetak Nota',['class'=>'btn btn-success btn-sm ']);
+                                            }
+                                        ?>
+                                        
                                     </td>
+                                    <td ><?=anchor(	'order/my_order_detail/' . $invoice->no_nota, 'Lihat Detail',['class'=>'btn btn-info btn-sm'])?> </td>
                                 </tr>
                             <?php endforeach; ?>
                             </tbody>

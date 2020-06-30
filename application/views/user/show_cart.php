@@ -65,6 +65,13 @@
 				</div>
 
 				<div class="card col-12 px-5 pt-5 pb-4">
+					
+				<div id="overlay">
+					<div class="w-100 d-flex justify-content-center align-items-center">
+						<div class="spinner"></div>
+					</div>
+				</div>
+
 					<form action="<?=site_url('order')?>" method="post">
 						<div class="form-group">
 							<label for="alamat">Dikirim ke</label>
@@ -125,13 +132,17 @@
 						<div class="col-12 mt-4" id="totals">
 							<div class=" col-6 row ml-auto px-3 py-2 bg-light">
 									<div class="col-6 text-muted">Total Pesanan</div>
-									<div class="col-6 text-right text-muted" id="total2"></div>
+									<div class="col-6 text-right text-muted" id="total2">Rp. 0</div>
 									<div class="col-6 text-muted">Biaya Pengiriman</div>
 									<div class="col-6 text-right text-muted" id="ongkir">Rp. 0</div>
 									<div class="col-6 font-weight-bold">Total Bayar</div>
-									<div class="col-6 text-right font-weight-bold" id="totalAll"></div>
+									<div class="col-6 text-right font-weight-bold" id="totalAll">Rp. 0</div>
 							</div>
 						</div>
+
+						<input type="hidden" name="fexpedisi" id="fexpedisi">
+						<input type="hidden" name="fetd" id="fetd">
+						<input type="hidden" name="fongkir" id="fongkir">
 
 						<div class="form-group text-center mt-3 mb-0">
 							<button type="submit" class="btn btn-success btn-checkout">Checkout</button>
@@ -152,10 +163,8 @@
 
 			$('.cart-nav').remove();
 
-			console.log("ini ke load 1")
 			$(document).ready(function() {
 
-				console.log("ini ke load 2")
 				var ongkir;
 				var total;
 
@@ -189,7 +198,8 @@
 
 				//ketika provinsi dipilih
 				$('#province').change(function(){ 
-					$('#kabKota').attr('disabled', false);
+					loading_on();
+					$('.btn-checkout').prop('disabled', true);;
 					var id=$(this).val();
 					$.ajax({
 						url : "<?php echo site_url('produk/load_kabKota');?>",
@@ -200,6 +210,8 @@
 						success: function(data){
 							$('#kabKota').html(data); //mengisi option pada kab/kota
 							$('#biaya').html("");	//membuat div biaya kosong
+							$('#kabKota').attr('disabled', false);
+							loading_off();
 	
 						}
 					});
@@ -208,16 +220,26 @@
 				
 				//ketika kabupaten dipilih
 				$('#kabKota').change(function(){ 
+					loading_on();
+					$('.btn-checkout').prop('disabled', true);
+					$('input:radio[name=kurir]').filter('[value=pos]').prop('checked', true);
 					var kab=$('#kabKota').val();
 					var kurir= 'pos';
+					
 					load_ongkir(kab,kurir);
 					return false;
 				}); 
 				
 				//ketika kurir dipilih	
 				$('input[name="kurir"]').change(function(){ 
+					loading_on();
+					$('.btn-checkout').prop('disabled', true);
 					$('#ongkir').html('Rp. 0');
 					$('#totalAll').html($('#total').html());
+
+					$('#fexpedisi').val("");
+					$('#fetd').val("");
+					$('#fongkir').val("");
 
 					var kab=$('#kabKota').val();
 					var kurir=$(this).val();
@@ -237,7 +259,7 @@
 						success: function(data){
 							if(kab>0){
 								$('#biaya').html(data);
-								
+								loading_off();
 								//ketika ongkir dipilih	
 								$('input[name="ongkir"]').change(function(){ 
 									ongkir=$(this).val();
@@ -248,11 +270,23 @@
 									$('#totalAll').html( parseInt(total) + parseInt(ongkir) );
 									$('#totalAll').formatCurrency();
 
+									$('#fexpedisi').val($('#sexpedisi').html());
+									$('#fetd').val($('#setd').html());
+									$('#fongkir').val(ongkir);
+
 									$('.btn-checkout').prop('disabled', false);
 								});
 							}
 						}
 					});
+				}
+
+				function loading_on() {
+					document.getElementById("overlay").style.display = "flex";
+				}
+
+				function loading_off() {
+					document.getElementById("overlay").style.display = "none";
 				}
 				
 

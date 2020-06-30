@@ -24,12 +24,14 @@
 					</button>
 				</div>
 				<div class="modal-body py-4">
-					Terimakasih,<br>
-					Transaksi berhasil diproses, Silahkan kembali ke halaman utama untuk memulai transaksi kembali
+					Terimakasih, Transaksi berhasil diproses <br>
+					Silahkan lakukan konfirmasi pembayaran pada menu <strong>My Orders</strong>, 
+					atau melalui tombol dibawah
+					
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn" onclick="location.href='<?= base_url()?>'">Kembali ke beranda</button>
-					<button type="button" class="btn btn-success " onclick="location.href='<?= site_url('order/printNota/'.$no_nota)?>'">Cetak Nota</button>
+					<button type="button" class="btn btn-success " onclick="location.href='<?= site_url('order/my_order')?>'">Konfirmasi Pembayaran</button>
 				</div>
 				</div>
 			</div>

@@ -138,6 +138,17 @@ class Product_model extends CI_Model{
 
     }
 
+    public function getBestSale()
+    {
+        $this->db->select('`kd_barang`, `nm_barang`, `satuan`, `deskripsi`, `harga`, `harga_beli`, `stok`, `stok_min`, `gambar`, sum(`jml_brg`)')
+                ->from('barang')
+                ->join('detail_penjualan','detail_penjualan.kd_brg=barang.kd_barang')
+                ->group_by('kd_barang')
+                ->limit(6)
+                ->order_by('sum(`jml_brg`)', 'DESC');
+        
+        return $this->db->get()->result();
+    }
     
 
     public function filter($query){
@@ -242,7 +253,7 @@ class Product_model extends CI_Model{
 
         $config['allowed_types']        = 'gif|jpg|png';
 
-        $config['file_name']            = 'Produk'.$this->kd_barang;
+        $config['file_name']            = 'foto-'.$this->nm_barang;
 
         $config['overwrite']			= true;
 

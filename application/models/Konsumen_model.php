@@ -362,9 +362,11 @@
 
 		//update profil
 
-		public function getProfile(){
+		public function getProfile($id=0){
 
-			$id = $this->session->userdata('id');
+			if($id<1){
+				$id = $this->session->userdata('id');
+			}
 
 			return $this->db->get_where($this->_table, ["kd_konsumen" => $id])->row();
 
@@ -442,7 +444,7 @@
 
 			}
 
-			return $post["gambar_lama"];
+			return base_url('upload/profil/').$post["gambar_lama"];
 
 		}
 

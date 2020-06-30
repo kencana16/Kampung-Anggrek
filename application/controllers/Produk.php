@@ -14,6 +14,7 @@ class Produk extends CI_Controller {
 	public function index()
 	{
 		$data['products'] = $this->product_model->getAll();
+		$data['best_products'] = $this->product_model->getBestSale();
 		$this->load->view('user/home', $data);
 	}
 	
@@ -31,6 +32,7 @@ class Produk extends CI_Controller {
 	{
 		$data['productsDetail'] = $this->product_model->getById($id);
 		$data['products'] = $this->product_model->getAll();
+		$data['best_products'] = $this->product_model->getBestSale();
 		$this->load->view('user/detail', $data);
 	}
 	
