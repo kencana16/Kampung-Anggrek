@@ -35,5 +35,4 @@ if (!empty($row)){
     die(json_encode($response));
 }
 
-mysqli_close($con);
 ?> 

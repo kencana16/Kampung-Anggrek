@@ -10,7 +10,7 @@ $result = mysqli_query($koneksi,$query);
 $row = mysqli_fetch_array($result); 
 while(!empty($row)) 
 { 
-    $response = new usr(); 
+  $response = new usr();
   $response->username = $row['username']; 
   $response->no_nota = $row['no_nota']; 
   $response->tanggal = $row['tgl_jual']; 

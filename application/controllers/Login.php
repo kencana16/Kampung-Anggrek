@@ -4,13 +4,15 @@ class Login extends CI_Controller {
 
 	function __construct() { 
         parent::__construct(); 
-         
+
+         // Load google oauth library 
+        $this->load->library('google'); 
         // Load facebook oauth library 
         $this->load->library('facebook'); 
          
         // Load user model 
         $this->load->model('user'); 
-		$this->load->model('konsumen_model');
+        $this->load->model('konsumen_model');
     } 
 
 	public function index()
@@ -18,7 +20,8 @@ class Login extends CI_Controller {
 		$validation = $this->form_validation;
         $validation->set_rules($this->konsumen_model->rulesLogin());
 		if($this->form_validation->run() == FALSE){
-			$data['authURL'] =  $this->facebook->login_url(); 
+            $data['googleAuthURL'] = $this->google->createAuthUrl();
+			$data['fbAuthURL'] =  $this->facebook->login_url(); 
 			$this->load->view('form_login',$data);
 		} else {
 			$valid_user = $this->konsumen_model->check_credential();
@@ -41,7 +44,53 @@ class Login extends CI_Controller {
 				}
 			}
 		}
-	}
+    }
+    
+    public function g_login(){ 
+                 
+        if(isset($_GET['code'])){ 
+             
+            // Otentikasi pengguna dengan google
+			$client = $this->google;
+			$client->authenticate($_GET['code']);
+			# ambil profilenya
+			$gp = new Google_Service_Plus($client);
+            $gpInfo = $gp->people->get("me"); 
+
+            // Get user info from google 
+            $gpInfo = $this->google->getUserInfo(); 
+
+             
+            // // Preparing data for database insertion 
+            // $userData['oauth_provider'] = 'google'; 
+            // $userData['oauth_uid']         = $gpInfo['id']; 
+            // $_firstname                 = $gpInfo['given_name']; 
+            // $_lastname                  = $gpInfo['family_name']; 
+            // $userData['nm_konsumen']        = $_firstname.' '.$_lastname; 
+            // $userData['username']        = $_firstname; 
+            // $userData['email']             = $gpInfo['email'];
+            // $userData['foto']         = !empty($gpInfo['picture'])?$gpInfo['picture']:''; 
+            // $userData['group']    = 2;
+
+             
+            // Insert or update user data to the database 
+            $userID = $this->user->checkUser($userData); 
+              
+             
+            // Store the user profile info into session 
+            //-//$this->session->set_userdata('userData', $userData); 
+            $this->session->set_userdata('id', $userID);
+			$this->session->set_userdata('username', $userData['username']);
+			$this->session->set_userdata('group', $userData['group']);
+			redirect(base_url()); 
+        }  
+         
+        // // Google authentication url 
+        // $data['loginURL'] = $this->google->createAuthUrl();
+         
+        // // Load google login view 
+        // $this->load->view('user_authentication/index',$data); 
+    } 
 
 	public function fb_login(){ 
         $userData = array(); 

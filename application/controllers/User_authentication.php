@@ -2,68 +2,91 @@
 defined('BASEPATH') OR exit('No direct script access allowed'); 
  
 class User_Authentication extends CI_Controller { 
-    function __construct() { 
+     
+    function __construct(){ 
         parent::__construct(); 
          
-        // Load facebook oauth library 
-        $this->load->library('facebook'); 
+        // Load google oauth library 
+        $this->load->library('google'); 
          
         // Load user model 
         $this->load->model('user'); 
     } 
      
     public function index(){ 
-        $userData = array(); 
+        // Redirect to profile page if the user already logged in 
+        if($this->session->userdata('loggedIn') == true){ 
+            redirect('user_authentication/profile/'); 
+        } 
          
-        // Authenticate user with facebook 
-        if($this->facebook->is_authenticated()){ 
-            // Get user info from facebook 
-            $fbUser = $this->facebook->request('get', '/me?fields=id,first_name,last_name,email,link,gender,picture'); 
- 
+        if(isset($_GET['code'])){ 
+             
+            // Otentikasi pengguna dengan google
+			$client = $this->google;
+			$client->authenticate($_GET['code']);
+			# ambil profilenya
+			$gp = new Google_Service_Plus($client);
+			$gpInfo = $gp->people->get("me"); 
+
+            // Get user info from google 
+            $gpInfo = $this->google->getUserInfo(); 
+             
             // Preparing data for database insertion 
-            $userData['oauth_provider'] = 'facebook'; 
-            $userData['oauth_uid']    = !empty($fbUser['id'])?$fbUser['id']:'';; 
-            $_firstname              = !empty($fbUser['first_name'])?$fbUser['first_name']:''; 
-            $_lastname               = !empty($fbUser['last_name'])?$fbUser['last_name']:''; 
+            $userData['oauth_provider'] = 'google'; 
+            $userData['oauth_uid']         = $gpInfo['id']; 
+            $_firstname                 = $gpInfo['given_name']; 
+            $_lastname                  = $gpInfo['family_name']; 
             $userData['nm_konsumen']        = $_firstname.' '.$_lastname; 
             $userData['username']        = $_firstname; 
-            $userData['email']        = !empty($fbUser['email'])?$fbUser['email']:''; 
-            $userData['foto']    = !empty($fbUser['picture']['data']['url'])?$fbUser['picture']['data']['url']:'';
+            $userData['email']             = $gpInfo['email'];
+            $userData['foto']         = !empty($gpInfo['picture'])?$gpInfo['picture']:''; 
             $userData['group']    = 2;
+
              
             // Insert or update user data to the database 
             $userID = $this->user->checkUser($userData); 
              
-            // Check user data insert or update status 
-            if(!empty($userID)){ 
-                $data['userData'] = $userData; 
-                 
-                // Store the user profile info into session 
-                //-//$this->session->set_userdata('userData', $userData); 
-                $this->session->set_userdata('id', $userID);
-				$this->session->set_userdata('username', $userData['username']);
-				$this->session->set_userdata('group', $userData['group']);
-            }else{ 
-               $data['userData'] = array(); 
-            } 
+            // Store the status and user profile info into session 
+            $this->session->set_userdata('loggedIn', true); 
+            $this->session->set_userdata('userData', $userData); 
              
-            // Facebook logout URL 
-            $data['logoutURL'] = $this->facebook->logout_url(); 
-        }else{ 
-            // Facebook authentication url 
-            $data['authURL'] =  $this->facebook->login_url(); 
-        } 
+            // Redirect to profile page 
+            redirect('user_authentication/profile/'); 
+        }  
          
-        // Load login/profile view 
+        // Google authentication url 
+        $data['loginURL'] = $this->google->createAuthUrl();
+         
+        // Load google login view 
         $this->load->view('user_authentication/index',$data); 
     } 
- 
-    public function logout() { 
-        // Remove local Facebook session 
-        $this->facebook->destroy_session(); 
-        // Remove user data from session 
-        $this->session->unset_userdata('userData'); 
-        // Redirect to login page 
-        redirect('user_authentication'); 
+     
+    public function profile(){ 
+        // Redirect to login page if the user not logged in 
+        if(!$this->session->userdata('loggedIn')){ 
+            redirect('/user_authentication/'); 
+        } 
+         
+        // Get user info from session 
+        $data['userData'] = $this->session->userdata('userData'); 
+         
+        // Load user profile view 
+        $this->load->view('user_authentication/profil',$data); 
     } 
+     
+    public function logout(){ 
+        // Reset OAuth access token 
+        $this->google->revokeToken(); 
+         
+        // Remove token and user data from the session 
+        $this->session->unset_userdata('loggedIn'); 
+        $this->session->unset_userdata('userData'); 
+         
+        // Destroy entire session data 
+        $this->session->sess_destroy(); 
+         
+        // Redirect to login page 
+        redirect('/user_authentication/'); 
+    } 
+     
 }

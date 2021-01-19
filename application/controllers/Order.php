@@ -59,12 +59,13 @@ class Order extends CI_Controller {
             $this->load->view('user/my_orders/form_tambah_bukti', $data); 
         } else { 
             if($_FILES['userfile']['name'] != ''){ 
+                $chk_ext = pathinfo($_FILES["userfile"]["name"], PATHINFO_EXTENSION);
                 //form submit dengan gambar diisi 
                 //load uploading file library 
                 $config['upload_path'] = './uploads/bukti/'; 
                 $config['allowed_types'] = 'jpg|png|pdf'; 
                 $config['max_size'] = '2048'; //KB 
-                $config['file_name'] = 'BuktiPembayaran'.$id;
+                $config['file_name'] = 'BuktiPembayaran-'.$id;
                 $this->load->library('upload', $config); 
                     
                 if ( ! $this->upload->do_upload()) 
@@ -76,7 +77,7 @@ class Order extends CI_Controller {
                     $status="Sudah dibayar"; 
                     $data_invoice =     array( 
                         'status'  => $status, 
-                        'image'   => 'BuktiPembayaran-'.$id
+                        'image'   => $gambar['file_name']
                     ); 
                     $this->orders_model->update($id, $data_invoice); 
                     redirect('order/my_order'); 

@@ -94,7 +94,7 @@ class Shipping_model extends CI_Model{
         if ($err) {
         echo "cURL Error #:" . $err;
         } else {
-        echo $response;
+        //  echo $response;
         }
 
         $data = json_decode($response, true);

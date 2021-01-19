@@ -31,9 +31,9 @@
 
 					<div class="text-center mb-2">
 					
-						<?=anchor($authURL, " Login Dengan Facebook", array('class' => 'btn btn-sm btn-primary text-center mb-4'))?>
+						<?=anchor($fbAuthURL, " Login Dengan Facebook", array('class' => 'btn btn-primary text-center mb-4'))?>
 						<span class="m-3"></span>
-						<?=anchor($authURL, " Login Dengan Google", array('class' => 'btn btn-sm btn-danger text-center mb-4'))?>
+						<?=anchor($googleAuthURL, " Login Dengan Google", array('class' => 'btn btn-danger text-center mb-4'))?>
 
 						<div class="row d-flex justify-content-center">
 							<div class="col-3 p-0"><hr></div>

@@ -20,7 +20,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 */
 $config['facebook_app_id']                = '257306185612819';
 $config['facebook_app_secret']            = '24fea627cf255c1ac7b3e52f4a8813a3';
-$config['facebook_login_redirect_url']    = 'index.php/login/fb_login/';
+$config['facebook_login_redirect_url']    = 'index.php/login/fb_login';
 $config['facebook_logout_redirect_url']   = 'index.php/user_authentication/logout';
 $config['facebook_login_type']            = 'web';
 $config['facebook_permissions']           = array('email');
